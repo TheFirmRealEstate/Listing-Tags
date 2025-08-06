@@ -247,11 +247,7 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    function togglePasswordVisibility(id) {
-  const input = document.getElementById(id);
-  if (input.type === 'password') {
-    input.type = 'text';
-  } else {
+    // togglePasswordVisibility removed since it's no longer needed else {
     input.type = 'password';
   }
 }
@@ -341,11 +337,26 @@
 
     window.changePassword = function() {
       const user = auth.currentUser;
+      const oldPassword = document.getElementById('oldPassword').value;
       const newPassword = document.getElementById('newPassword').value;
-      if (user) {
-        updatePassword(user, newPassword).then(() => {
-          alert("Password updated successfully.");
-        }).catch((error) => {
+
+      if (!oldPassword || !newPassword) {
+        alert("Please enter both old and new passwords.");
+        return;
+      }
+
+      // Replace this with actual logic to authenticate the old password (this requires secure backend handling)
+      const passwordRef = ref(db, 'vendorPassword');
+      onValue(passwordRef, (snapshot) => {
+        const savedPassword = snapshot.val();
+        if (savedPassword === oldPassword) {
+          set(passwordRef, newPassword).then(() => {
+            alert("Password updated successfully.");
+          }).catch(err => alert("Error saving new password: " + err.message));
+        } else {
+          alert("Old password is incorrect.");
+        }
+      }, { onlyOnce: true });).catch((error) => {
           alert("Error updating password: " + error.message);
         });
       }
@@ -353,4 +364,3 @@
   </script>
 </body>
 </html>
-
