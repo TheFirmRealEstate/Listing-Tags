@@ -21,8 +21,11 @@
       margin-bottom: 15px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    .vendor-card h3 {
-      margin: 0 0 10px 0;
+    .vendor-category {
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      color: #333;
     }
     .vendor-card p {
       margin: 5px 0;
@@ -38,6 +41,7 @@
       border-radius: 6px;
       text-align: center;
       text-decoration: none;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -74,8 +78,8 @@
         const card = document.createElement("div");
         card.className = "vendor-card";
         card.innerHTML = `
-          <h3>${vendor.name}</h3>
-          <p><strong>Category:</strong> ${vendor.category}</p>
+          <div class="vendor-category">${vendor.category}</div>
+          <p><strong>Name:</strong> ${vendor.name}</p>
           <p><strong>Phone:</strong> ${vendor.phone}</p>
           <p><strong>Email:</strong> ${vendor.email}</p>
           <p><strong>Website:</strong> ${vendor.website}</p>
