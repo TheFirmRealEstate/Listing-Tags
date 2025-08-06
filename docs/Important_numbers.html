@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vendor Contact List</title>
+  <title>Home Contractor Contacts</title>
   <style>
     body {
       font-family: sans-serif;
@@ -30,7 +30,7 @@
     .nav-button {
       display: block;
       width: max-content;
-      margin: 0 auto 30px auto;
+      margin: 20px auto 0 auto;
       background-color: #007bff;
       color: white;
       border: none;
@@ -39,33 +39,13 @@
       text-align: center;
       text-decoration: none;
     }
-    .password-entry {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .password-entry input {
-      padding: 10px;
-      margin-right: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    .password-entry button {
-      padding: 10px 16px;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
-  <h1>Vendor Contact List</h1>
-  <div class="password-entry">
-    <input type="text" id="passwordInput" placeholder="Enter password to edit" />
-    <button onclick="checkPassword()">Edit Contacts</button>
-  </div>
+  <h1>Home Contractor Contacts</h1>
   <div class="vendor-list" id="vendorList"></div>
+
+  <button class="nav-button" onclick="promptPassword()">Edit Contacts</button>
   <a class="nav-button" href="index.html">← Back to Home</a>
 
   <script type="module">
@@ -115,17 +95,14 @@
       });
     }
 
-    window.checkPassword = function () {
-      const input = document.getElementById("passwordInput").value.trim();
-      if (!input) {
-        alert("Please enter a password.");
-        return;
-      }
+    window.promptPassword = function () {
+      const password = prompt("Enter password to edit:");
+      if (!password) return;
 
       const passwordRef = ref(database, "vendorPassword");
       get(passwordRef).then(snapshot => {
         const storedPassword = snapshot.val();
-        if (snapshot.exists() && input === storedPassword) {
+        if (snapshot.exists() && password === storedPassword) {
           window.location.href = "contacteditor.html";
         } else {
           alert("Incorrect password.");
