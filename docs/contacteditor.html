@@ -167,9 +167,9 @@
   <div class="password-section">
     <h3>Change Password</h3>
     <label>Old Password</label>
-<input id="oldPassword" type="text" />
+    <input id="oldPassword" type="text" />
     <label>New Password</label>
-<input id="newPassword" type="text" />
+    <input id="newPassword" type="text" />
     <button onclick="changePassword()">Change Password</button>
   </div>
 
@@ -230,8 +230,8 @@
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-    import { getDatabase, ref, push, set, onValue, remove, update } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
-    import { getAuth, updatePassword, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    import { getDatabase, ref, push, set, onValue, remove, update, get } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+    import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyBzI_qVMcNVtpc4vTycLwoj35G41-wrlHk",
@@ -246,11 +246,6 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
-
-    // togglePasswordVisibility removed since it's no longer needed else {
-    input.type = 'password';
-  }
-}
     const vendorRef = ref(db, 'vendors');
     const auth = getAuth(app);
 
@@ -336,30 +331,29 @@
     }
 
     window.changePassword = function() {
-      const user = auth.currentUser;
       const oldPassword = document.getElementById('oldPassword').value;
       const newPassword = document.getElementById('newPassword').value;
+      const passwordRef = ref(db, 'vendorPassword');
 
       if (!oldPassword || !newPassword) {
         alert("Please enter both old and new passwords.");
         return;
       }
 
-      // Replace this with actual logic to authenticate the old password (this requires secure backend handling)
-      const passwordRef = ref(db, 'vendorPassword');
-      onValue(passwordRef, (snapshot) => {
+      get(passwordRef).then((snapshot) => {
         const savedPassword = snapshot.val();
         if (savedPassword === oldPassword) {
           set(passwordRef, newPassword).then(() => {
             alert("Password updated successfully.");
-          }).catch(err => alert("Error saving new password: " + err.message));
+          }).catch((err) => {
+            alert("Error saving new password: " + err.message);
+          });
         } else {
           alert("Old password is incorrect.");
         }
-      }, { onlyOnce: true });).catch((error) => {
-          alert("Error updating password: " + error.message);
-        });
-      }
+      }).catch((error) => {
+        alert("Error reading password: " + error.message);
+      });
     }
   </script>
 </body>
