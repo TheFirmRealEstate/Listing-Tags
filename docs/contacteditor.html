@@ -116,9 +116,11 @@
 
   <div class="password-section">
     <h3>Change Password</h3>
+    <label>Current Password</label>
+    <input id="currentPassword" type="password" />
     <label>New Password</label>
     <input id="newPassword" type="password" />
-    <button onclick="alert('Password change not implemented in demo.')">Change Password</button>
+    <button onclick="changePassword()">Change Password</button>
   </div>
 
   <div class="modal" id="editModal">
@@ -142,6 +144,7 @@
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
     import { getDatabase, ref, push, set, onValue, remove, update } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+    import { getAuth, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyBzI_qVMcNVtpc4vTycLwoj35G41-wrlHk",
@@ -157,6 +160,7 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const vendorRef = ref(db, 'vendors');
+    const auth = getAuth(app);
 
     const vendorForm = document.getElementById('vendorForm');
     const vendorList = document.getElementById('vendorList');
@@ -234,6 +238,21 @@
       if (currentEditKey) {
         update(ref(db, 'vendors/' + currentEditKey), edited);
         closeModal();
+      }
+    }
+
+    window.changePassword = function() {
+      const currentPass = document.getElementById('currentPassword').value;
+      const newPass = document.getElementById('newPassword').value;
+      const user = auth.currentUser;
+      if (user && user.email) {
+        const credential = EmailAuthProvider.credential(user.email, currentPass);
+        reauthenticateWithCredential(user, credential)
+          .then(() => updatePassword(user, newPass))
+          .then(() => alert("Password changed successfully."))
+          .catch((error) => alert("Error: " + error.message));
+      } else {
+        alert("You must be logged in to change your password.");
       }
     }
   </script>
