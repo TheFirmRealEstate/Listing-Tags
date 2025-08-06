@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Home Contractor Contacts</title>
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: sans-serif;
       background-color: #f0f4f8;
       margin: 0;
       padding: 20px;
@@ -15,7 +15,6 @@
     h1 {
       text-align: center;
       margin-bottom: 30px;
-      font-size: 1.8em;
       color: #333;
     }
 
@@ -25,24 +24,18 @@
       padding: 20px;
       margin-bottom: 20px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-      transition: transform 0.2s ease;
-    }
-
-    .vendor-card:hover {
-      transform: translateY(-3px);
     }
 
     .vendor-title {
       font-size: 1.2em;
+      margin-bottom: 8px;
       font-weight: bold;
-      margin-bottom: 5px;
       color: #222;
     }
 
     .vendor-info {
-      font-size: 0.95em;
+      margin-bottom: 12px;
       color: #555;
-      margin-bottom: 15px;
     }
 
     .button-row {
@@ -53,24 +46,17 @@
 
     .button-row a {
       flex: 1 1 calc(50% - 10px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      text-align: center;
       padding: 12px;
-      background-color: #0066cc;
+      background-color: #007bff;
       color: white;
       text-decoration: none;
-      border-radius: 8px;
+      border-radius: 6px;
       font-size: 0.9em;
     }
 
     .button-row a:hover {
-      background-color: #004a99;
-    }
-
-    .button-row a span {
-      margin-right: 6px;
-      font-size: 1.1em;
+      background-color: #0056b3;
     }
 
     @media (min-width: 600px) {
@@ -82,74 +68,60 @@
 </head>
 <body>
   <h1>Home Contractor Contacts</h1>
+  <div id="vendorContainer"></div>
 
-  <!-- Plumber -->
-  <div class="vendor-card">
-    <div class="vendor-title">Plumber</div>
-    <div class="vendor-info">
-      Joe's Plumbing Co.<br>
-      📞 (555) 123-4567<br>
-      ✉️ joe@plumbing-pros.fake<br>
-      🌐 www.joesplumbing.fake
-    </div>
-    <div class="button-row">
-      <a href="tel:5551234567"><span>📞</span>Call</a>
-      <a href="sms:5551234567"><span>💬</span>Text</a>
-      <a href="mailto:joe@plumbing-pros.fake"><span>✉️</span>Email</a>
-      <a href="https://www.joesplumbing.fake" target="_blank"><span>🌐</span>Website</a>
-    </div>
-  </div>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getDatabase, ref, get, child } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
-  <!-- Electrician -->
-  <div class="vendor-card">
-    <div class="vendor-title">Electrician</div>
-    <div class="vendor-info">
-      Bright Sparks Electric<br>
-      📞 (555) 987-6543<br>
-      ✉️ contact@brightsparks.fake<br>
-      🌐 www.brightsparks.fake
-    </div>
-    <div class="button-row">
-      <a href="tel:5559876543"><span>📞</span>Call</a>
-      <a href="sms:5559876543"><span>💬</span>Text</a>
-      <a href="mailto:contact@brightsparks.fake"><span>✉️</span>Email</a>
-      <a href="https://www.brightsparks.fake" target="_blank"><span>🌐</span>Website</a>
-    </div>
-  </div>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBzI_qVMcNVtpc4vTycLwoj35G41-wrlHk",
+      authDomain: "listing-tags.firebaseapp.com",
+      databaseURL: "https://listing-tags-default-rtdb.firebaseio.com",
+      projectId: "listing-tags",
+      storageBucket: "listing-tags.firebasestorage.app",
+      messagingSenderId: "694142664765",
+      appId: "1:694142664765:web:06e635c9703ab749a4aa54",
+      measurementId: "G-6F73KCXH4C"
+    };
 
-  <!-- Pool Guy -->
-  <div class="vendor-card">
-    <div class="vendor-title">Pool Maintenance</div>
-    <div class="vendor-info">
-      Crystal Pool Services<br>
-      📞 (555) 444-1212<br>
-      ✉️ info@crystalpools.fake<br>
-      🌐 www.crystalpools.fake
-    </div>
-    <div class="button-row">
-      <a href="tel:5554441212"><span>📞</span>Call</a>
-      <a href="sms:5554441212"><span>💬</span>Text</a>
-      <a href="mailto:info@crystalpools.fake"><span>✉️</span>Email</a>
-      <a href="https://www.crystalpools.fake" target="_blank"><span>🌐</span>Website</a>
-    </div>
-  </div>
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const dbRef = ref(db);
 
-  <!-- Landscaping -->
-  <div class="vendor-card">
-    <div class="vendor-title">Landscaping</div>
-    <div class="vendor-info">
-      Greenview Landscaping<br>
-      📞 (555) 303-1122<br>
-      ✉️ team@greenview.fake<br>
-      🌐 www.greenview.fake
-    </div>
-    <div class="button-row">
-      <a href="tel:5553031122"><span>📞</span>Call</a>
-      <a href="sms:5553031122"><span>💬</span>Text</a>
-      <a href="mailto:team@greenview.fake"><span>✉️</span>Email</a>
-      <a href="https://www.greenview.fake" target="_blank"><span>🌐</span>Website</a>
-    </div>
-  </div>
+    const vendorContainer = document.getElementById('vendorContainer');
 
+    get(child(dbRef, 'vendors')).then((snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        Object.keys(data).forEach(key => {
+          const vendor = data[key];
+          const card = document.createElement('div');
+          card.className = 'vendor-card';
+          card.innerHTML = `
+            <div class="vendor-title">${vendor.category}</div>
+            <div class="vendor-info">
+              ${vendor.name}<br>
+              📞 ${vendor.phone || 'N/A'}<br>
+              ✉️ ${vendor.email || 'N/A'}<br>
+              🌐 ${vendor.website || 'N/A'}
+            </div>
+            <div class="button-row">
+              ${vendor.phone ? `<a href="tel:${vendor.phone}">📞 Call</a>` : ''}
+              ${vendor.phone ? `<a href="sms:${vendor.phone}">💬 Text</a>` : ''}
+              ${vendor.email ? `<a href="mailto:${vendor.email}">✉️ Email</a>` : ''}
+              ${vendor.website ? `<a href="${vendor.website}" target="_blank">🌐 Website</a>` : ''}
+            </div>
+          `;
+          vendorContainer.appendChild(card);
+        });
+      } else {
+        vendorContainer.innerHTML = '<p>No vendor data found.</p>';
+      }
+    }).catch((error) => {
+      console.error(error);
+      vendorContainer.innerHTML = '<p>Error loading vendor data.</p>';
+    });
+  </script>
 </body>
 </html>
