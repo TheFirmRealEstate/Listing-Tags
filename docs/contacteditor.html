@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Edit Vendor Contacts</title>
   <style>
     body {
@@ -10,12 +10,12 @@
       background-color: #f0f2f5;
       padding: 20px;
     }
-    h1 {
+    h1, h2 {
       text-align: center;
     }
-    form {
+    form, .vendor-list, .password-section {
       max-width: 600px;
-      margin: 0 auto;
+      margin: 20px auto;
       background: white;
       padding: 20px;
       border-radius: 12px;
@@ -47,6 +47,38 @@
     button:hover {
       background-color: #0056b3;
     }
+    .vendor-card {
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background: #fff;
+      transition: border-color 0.2s ease;
+    }
+    .vendor-card.editing {
+      border-color: #007bff;
+      background-color: #eaf4ff;
+    }
+    .vendor-card h3 {
+      margin-top: 0;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .action-buttons button {
+      flex: 1;
+      padding: 10px;
+      font-size: 0.9em;
+      background-color: #6c757d;
+    }
+    .action-buttons .edit {
+      background-color: #28a745;
+    }
+    .action-buttons .delete {
+      background-color: #dc3545;
+    }
     .status {
       margin-top: 15px;
       text-align: center;
@@ -60,78 +92,41 @@
     <label for="category">Category</label>
     <select id="category" required>
       <option value="" disabled selected>Select a category</option>
-      <option value="Appliance Repair">Appliance Repair</option>
-      <option value="Audio/Visual Technician">Audio/Visual Technician</option>
-      <option value="Basement Waterproofing">Basement Waterproofing</option>
-      <option value="Blinds/Shades Installer">Blinds/Shades Installer</option>
-      <option value="Cabinet Maker">Cabinet Maker</option>
-      <option value="Chimney Sweep">Chimney Sweep</option>
-      <option value="Cleaning Service">Cleaning Service</option>
-      <option value="Closet Organizer / Custom Storage">Closet Organizer / Custom Storage</option>
-      <option value="Concrete / Driveway Contractor">Concrete / Driveway Contractor</option>
-      <option value="Countertop Installer">Countertop Installer</option>
-      <option value="Drywall / Plaster">Drywall / Plaster</option>
-      <option value="Electrician">Electrician</option>
-      <option value="Fence Installer">Fence Installer</option>
-      <option value="Flooring Installer">Flooring Installer</option>
-      <option value="Foundation Repair">Foundation Repair</option>
-      <option value="Garage Door Repair">Garage Door Repair</option>
-      <option value="General Contractor">General Contractor</option>
-      <option value="Gutter Cleaning">Gutter Cleaning</option>
-      <option value="Handyman">Handyman</option>
-      <option value="Home Inspector">Home Inspector</option>
-      <option value="HVAC / Heating & Cooling">HVAC / Heating & Cooling</option>
-      <option value="Insulation Contractor">Insulation Contractor</option>
-      <option value="Interior Designer">Interior Designer</option>
-      <option value="Irrigation / Sprinkler System">Irrigation / Sprinkler System</option>
-      <option value="Landscaping">Landscaping</option>
-      <option value="Locksmith">Locksmith</option>
-      <option value="Masonry">Masonry</option>
-      <option value="Mold Remediation">Mold Remediation</option>
-      <option value="Painter">Painter</option>
-      <option value="Pest Control">Pest Control</option>
-      <option value="Pest Inspector">Pest Inspector</option>
       <option value="Plumber">Plumber</option>
-      <option value="Pool Maintenance">Pool Maintenance</option>
-      <option value="Radon Mitigation">Radon Mitigation</option>
-      <option value="Roofing">Roofing</option>
-      <option value="Security System / Cameras">Security System / Cameras</option>
-      <option value="Septic Service">Septic Service</option>
-      <option value="Siding Installer">Siding Installer</option>
-      <option value="Skylight Installer">Skylight Installer</option>
-      <option value="Smart Home Integrator">Smart Home Integrator</option>
-      <option value="Snow Removal">Snow Removal</option>
-      <option value="Solar Installer">Solar Installer</option>
-      <option value="Structural Engineer">Structural Engineer</option>
-      <option value="Stucco Repair">Stucco Repair</option>
-      <option value="Tiler / Tile Installer">Tiler / Tile Installer</option>
-      <option value="Tree Service">Tree Service</option>
-      <option value="Wallpaper Installer">Wallpaper Installer</option>
-      <option value="Water Softener / Filtration">Water Softener / Filtration</option>
-      <option value="Well/Water Pump Service">Well/Water Pump Service</option>
-      <option value="Window Repair/Replacement">Window Repair/Replacement</option>
+      <option value="Electrician">Electrician</option>
+      <option value="Landscaping">Landscaping</option>
+      <option value="HVAC">HVAC</option>
+      <option value="Painter">Painter</option>
+      <!-- Add more as needed -->
     </select>
-
     <label for="name">Vendor Name</label>
     <input type="text" id="name" required />
-
     <label for="phone">Phone Number</label>
     <input type="tel" id="phone" />
-
     <label for="email">Email</label>
     <input type="email" id="email" />
-
     <label for="website">Website</label>
     <input type="url" id="website" />
-
     <button type="submit">Save Vendor Info</button>
     <div class="status" id="statusMessage"></div>
   </form>
 
-  <!-- Firebase JS SDK -->
+  <div class="vendor-list">
+    <h2>Existing Vendors</h2>
+    <div id="vendorContainer"></div>
+  </div>
+
+  <div class="password-section">
+    <h2>Change Password</h2>
+    <label for="newPassword">New Password</label>
+    <input type="password" id="newPassword" />
+    <button onclick="changePassword()">Update Password</button>
+    <div class="status" id="passwordStatus"></div>
+  </div>
+
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getDatabase, ref, set, get, child, remove } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyBzI_qVMcNVtpc4vTycLwoj35G41-wrlHk",
@@ -146,9 +141,12 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
-
     const form = document.getElementById("vendorForm");
+    const vendorContainer = document.getElementById("vendorContainer");
     const statusMessage = document.getElementById("statusMessage");
+    const passwordStatus = document.getElementById("passwordStatus");
+
+    let editKey = null;
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -159,22 +157,78 @@
       const email = document.getElementById("email").value.trim();
       const website = document.getElementById("website").value.trim();
 
-      const vendorRef = ref(db, `vendors/${category.toLowerCase().replace(/\s+/g, "_")}`);
+      const key = editKey || category.toLowerCase().replace(/\s+/g, "_");
+      const vendorRef = ref(db, `vendors/${key}`);
 
-      set(vendorRef, {
-        category,
-        name,
-        phone,
-        email,
-        website
-      }).then(() => {
+      set(vendorRef, { category, name, phone, email, website }).then(() => {
         statusMessage.textContent = "Saved successfully!";
         form.reset();
-      }).catch((error) => {
-        statusMessage.textContent = "Error: " + error.message;
-        statusMessage.style.color = "red";
+        editKey = null;
+        loadVendors();
       });
     });
+
+    function loadVendors() {
+      get(child(ref(db), 'vendors')).then(snapshot => {
+        vendorContainer.innerHTML = "";
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          Object.keys(data).forEach(key => {
+            const vendor = data[key];
+            const card = document.createElement("div");
+            card.className = "vendor-card";
+            if (key === editKey) card.classList.add("editing");
+            card.innerHTML = `
+              <h3>${vendor.category}</h3>
+              <p><strong>${vendor.name}</strong><br>
+              📞 ${vendor.phone}<br>
+              ✉️ ${vendor.email}<br>
+              🌐 ${vendor.website}</p>
+              <div class="action-buttons">
+                <button class="edit" onclick="editVendor('${key}')">Edit</button>
+                <button class="delete" onclick="deleteVendor('${key}')">Delete</button>
+              </div>
+            `;
+            vendorContainer.appendChild(card);
+          });
+        }
+      });
+    }
+
+    window.editVendor = (key) => {
+      get(ref(db, `vendors/${key}`)).then(snapshot => {
+        if (snapshot.exists()) {
+          const vendor = snapshot.val();
+          document.getElementById("category").value = vendor.category;
+          document.getElementById("name").value = vendor.name;
+          document.getElementById("phone").value = vendor.phone;
+          document.getElementById("email").value = vendor.email;
+          document.getElementById("website").value = vendor.website;
+          editKey = key;
+          loadVendors();
+        }
+      });
+    };
+
+    window.deleteVendor = (key) => {
+      if (confirm("Are you sure you want to delete this vendor?")) {
+        remove(ref(db, `vendors/${key}`)).then(() => loadVendors());
+      }
+    };
+
+    window.changePassword = () => {
+      const newPassword = document.getElementById("newPassword").value;
+      if (!newPassword || newPassword.length < 6) {
+        passwordStatus.textContent = "Password must be at least 6 characters.";
+        passwordStatus.style.color = "red";
+        return;
+      }
+      // Placeholder: you'd replace this with Firebase Auth logic later
+      alert("Password changed to: " + newPassword);
+      passwordStatus.textContent = "Password updated (simulated).";
+    };
+
+    loadVendors();
   </script>
 </body>
 </html>
