@@ -59,6 +59,20 @@
       background-color: #0056b3;
     }
 
+    .admin-button {
+      display: block;
+      max-width: 200px;
+      margin: 40px auto 0;
+      text-align: center;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
     @media (min-width: 600px) {
       .button-row a {
         flex: 1 1 22%;
@@ -69,6 +83,8 @@
 <body>
   <h1>Home Contractor Contacts</h1>
   <div id="vendorContainer"></div>
+
+  <button class="admin-button" onclick="showLogin()">Edit Vendor List</button>
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
@@ -122,6 +138,15 @@
       console.error(error);
       vendorContainer.innerHTML = '<p>Error loading vendor data.</p>';
     });
+
+    window.showLogin = function () {
+      const password = prompt("Enter password to edit:");
+      if (password === "edit123") {
+        window.location.href = "contacteditor.html";
+      } else {
+        alert("Incorrect password.");
+      }
+    }
   </script>
 </body>
 </html>
