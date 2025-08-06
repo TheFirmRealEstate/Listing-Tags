@@ -104,13 +104,48 @@
   </style>
 </head>
 <body>
-  <a class="nav-button" href="contactdisplay.html">← Back to Vendor List</a>
+  <a class="nav-button" href="Important-numbers.html">← Back to Vendor List</a>
 
   <h1>Edit Vendor Contacts</h1>
   <form id="vendorForm">
     <h3>Add New Vendor</h3>
     <label>Category</label>
-    <input id="category" required />
+    <select id="category" required>
+      <option>Appliance Repair</option>
+      <option>Carpentry</option>
+      <option>Cleaning</option>
+      <option>Driveway/Asphalt</option>
+      <option>Electrician</option>
+      <option>Fencing</option>
+      <option>Flooring</option>
+      <option>Garage Door</option>
+      <option>Gutter Cleaning</option>
+      <option>Handyman</option>
+      <option>Heating & Cooling (HVAC)</option>
+      <option>Home Security</option>
+      <option>Insulation</option>
+      <option>Irrigation</option>
+      <option>Landscaping</option>
+      <option>Locksmith</option>
+      <option>Masonry</option>
+      <option>Painting</option>
+      <option>Pest Control</option>
+      <option>Plumber</option>
+      <option>Pool Maintenance</option>
+      <option>Remodeling</option>
+      <option>Roofing</option>
+      <option>Septic</option>
+      <option>Siding</option>
+      <option>Snow Removal</option>
+      <option>Solar</option>
+      <option>Surveyor</option>
+      <option>Tile Work</option>
+      <option>Tree Services</option>
+      <option>Well/Water Systems</option>
+      <option>Window Cleaning</option>
+      <option>Windows & Doors</option>
+      <option>Other</option>
+    </select>
 
     <label>Name</label>
     <input id="name" required />
@@ -133,14 +168,14 @@
     <h3>Change Password</h3>
     <label>Old Password</label>
     <input id="oldPassword" type="password" />
-    <button type="button" onclick="togglePasswordVisibility('oldPassword')">👁️</button>
+    <button type="button" onclick="togglePasswordVisibility('oldPassword')">👁️</button><br>
     <label>New Password</label>
     <input id="newPassword" type="password" />
-    <button type="button" onclick="togglePasswordVisibility('newPassword')">👁️</button>
+    <button type="button" onclick="togglePasswordVisibility('newPassword')">👁️</button><br>
     <button onclick="changePassword()">Change Password</button>
   </div>
 
-  <a class="nav-button" href="contactdisplay.html">← Back to Vendor List</a>
+  <a class="nav-button" href="Important-numbers.html">← Back to Vendor List</a>
 
   <div class="modal" id="editModal">
     <div class="modal-content" style="min-width: 420px">
