@@ -26,7 +26,7 @@
       margin-top: 15px;
       font-weight: bold;
     }
-    input {
+    input, select {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
@@ -57,8 +57,60 @@
 <body>
   <h1>Edit Vendor Contacts</h1>
   <form id="vendorForm">
-    <label for="category">Category (e.g., Plumber)</label>
-    <input type="text" id="category" required />
+    <label for="category">Category</label>
+    <select id="category" required>
+      <option value="" disabled selected>Select a category</option>
+      <option value="Appliance Repair">Appliance Repair</option>
+      <option value="Audio/Visual Technician">Audio/Visual Technician</option>
+      <option value="Basement Waterproofing">Basement Waterproofing</option>
+      <option value="Blinds/Shades Installer">Blinds/Shades Installer</option>
+      <option value="Cabinet Maker">Cabinet Maker</option>
+      <option value="Chimney Sweep">Chimney Sweep</option>
+      <option value="Cleaning Service">Cleaning Service</option>
+      <option value="Closet Organizer / Custom Storage">Closet Organizer / Custom Storage</option>
+      <option value="Concrete / Driveway Contractor">Concrete / Driveway Contractor</option>
+      <option value="Countertop Installer">Countertop Installer</option>
+      <option value="Drywall / Plaster">Drywall / Plaster</option>
+      <option value="Electrician">Electrician</option>
+      <option value="Fence Installer">Fence Installer</option>
+      <option value="Flooring Installer">Flooring Installer</option>
+      <option value="Foundation Repair">Foundation Repair</option>
+      <option value="Garage Door Repair">Garage Door Repair</option>
+      <option value="General Contractor">General Contractor</option>
+      <option value="Gutter Cleaning">Gutter Cleaning</option>
+      <option value="Handyman">Handyman</option>
+      <option value="Home Inspector">Home Inspector</option>
+      <option value="HVAC / Heating & Cooling">HVAC / Heating & Cooling</option>
+      <option value="Insulation Contractor">Insulation Contractor</option>
+      <option value="Interior Designer">Interior Designer</option>
+      <option value="Irrigation / Sprinkler System">Irrigation / Sprinkler System</option>
+      <option value="Landscaping">Landscaping</option>
+      <option value="Locksmith">Locksmith</option>
+      <option value="Masonry">Masonry</option>
+      <option value="Mold Remediation">Mold Remediation</option>
+      <option value="Painter">Painter</option>
+      <option value="Pest Control">Pest Control</option>
+      <option value="Pest Inspector">Pest Inspector</option>
+      <option value="Plumber">Plumber</option>
+      <option value="Pool Maintenance">Pool Maintenance</option>
+      <option value="Radon Mitigation">Radon Mitigation</option>
+      <option value="Roofing">Roofing</option>
+      <option value="Security System / Cameras">Security System / Cameras</option>
+      <option value="Septic Service">Septic Service</option>
+      <option value="Siding Installer">Siding Installer</option>
+      <option value="Skylight Installer">Skylight Installer</option>
+      <option value="Smart Home Integrator">Smart Home Integrator</option>
+      <option value="Snow Removal">Snow Removal</option>
+      <option value="Solar Installer">Solar Installer</option>
+      <option value="Structural Engineer">Structural Engineer</option>
+      <option value="Stucco Repair">Stucco Repair</option>
+      <option value="Tiler / Tile Installer">Tiler / Tile Installer</option>
+      <option value="Tree Service">Tree Service</option>
+      <option value="Wallpaper Installer">Wallpaper Installer</option>
+      <option value="Water Softener / Filtration">Water Softener / Filtration</option>
+      <option value="Well/Water Pump Service">Well/Water Pump Service</option>
+      <option value="Window Repair/Replacement">Window Repair/Replacement</option>
+    </select>
 
     <label for="name">Vendor Name</label>
     <input type="text" id="name" required />
@@ -78,7 +130,6 @@
 
   <!-- Firebase JS SDK -->
   <script type="module">
-    // Firebase imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
@@ -102,7 +153,7 @@
     form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const category = document.getElementById("category").value.trim();
+      const category = document.getElementById("category").value;
       const name = document.getElementById("name").value.trim();
       const phone = document.getElementById("phone").value.trim();
       const email = document.getElementById("email").value.trim();
