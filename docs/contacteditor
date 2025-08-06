@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Vendor Contacts</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f0f2f5;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .status {
+      margin-top: 15px;
+      text-align: center;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <h1>Edit Vendor Contacts</h1>
+  <form id="vendorForm">
+    <label for="category">Category (e.g., Plumber)</label>
+    <input type="text" id="category" required />
+
+    <label for="name">Vendor Name</label>
+    <input type="text" id="name" required />
+
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" />
+
+    <label for="email">Email</label>
+    <input type="email" id="email" />
+
+    <label for="website">Website</label>
+    <input type="url" id="website" />
+
+    <button type="submit">Save Vendor Info</button>
+    <div class="status" id="statusMessage"></div>
+  </form>
+
+  <!-- Firebase JS SDK -->
+  <script type="module">
+    // Firebase imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBzI_qVMcNVtpc4vTycLwoj35G41-wrlHk",
+      authDomain: "listing-tags.firebaseapp.com",
+      databaseURL: "https://listing-tags-default-rtdb.firebaseio.com",
+      projectId: "listing-tags",
+      storageBucket: "listing-tags.firebasestorage.app",
+      messagingSenderId: "694142664765",
+      appId: "1:694142664765:web:06e635c9703ab749a4aa54",
+      measurementId: "G-6F73KCXH4C"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const form = document.getElementById("vendorForm");
+    const statusMessage = document.getElementById("statusMessage");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const category = document.getElementById("category").value.trim();
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const website = document.getElementById("website").value.trim();
+
+      const vendorRef = ref(db, `vendors/${category.toLowerCase().replace(/\s+/g, "_")}`);
+
+      set(vendorRef, {
+        category,
+        name,
+        phone,
+        email,
+        website
+      }).then(() => {
+        statusMessage.textContent = "Saved successfully!";
+        form.reset();
+      }).catch((error) => {
+        statusMessage.textContent = "Error: " + error.message;
+        statusMessage.style.color = "red";
+      });
+    });
+  </script>
+</body>
+</html>
