@@ -179,7 +179,40 @@
       <h3>Edit Vendor</h3>
       <label>Category</label>
       <select id="editCategory">
-        <!-- same categories -->
+        <option>Appliance Repair</option>
+        <option>Carpentry</option>
+        <option>Cleaning</option>
+        <option>Driveway/Asphalt</option>
+        <option>Electrician</option>
+        <option>Fencing</option>
+        <option>Flooring</option>
+        <option>Garage Door</option>
+        <option>Gutter Cleaning</option>
+        <option>Handyman</option>
+        <option>Heating & Cooling (HVAC)</option>
+        <option>Home Security</option>
+        <option>Insulation</option>
+        <option>Irrigation</option>
+        <option>Landscaping</option>
+        <option>Locksmith</option>
+        <option>Masonry</option>
+        <option>Painting</option>
+        <option>Pest Control</option>
+        <option>Plumber</option>
+        <option>Pool Maintenance</option>
+        <option>Remodeling</option>
+        <option>Roofing</option>
+        <option>Septic</option>
+        <option>Siding</option>
+        <option>Snow Removal</option>
+        <option>Solar</option>
+        <option>Surveyor</option>
+        <option>Tile Work</option>
+        <option>Tree Services</option>
+        <option>Well/Water Systems</option>
+        <option>Window Cleaning</option>
+        <option>Windows & Doors</option>
+        <option>Other</option>
       </select>
       <label>Name</label>
       <input id="editName" />
@@ -196,7 +229,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getDatabase, ref, set, get, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBzI_qVMcNVtpc4vTycLwoj35G41-wrlHk",
@@ -205,34 +238,48 @@
       projectId: "listing-tags",
       storageBucket: "listing-tags.appspot.com",
       messagingSenderId: "694142664765",
-      appId: "1:694142664765:web:06e635c9703ab749a4aa54"
+      appId: "1:694142664765:web:06e635c9703ab749a4aa54",
+      measurementId: "G-6F73KCXH4C"
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+    const database = getDatabase(app);
 
-    window.changePassword = async function() {
-      const oldPassword = document.getElementById("oldPassword").value;
-      const newPassword = document.getElementById("newPassword").value;
+    window.changePassword = function () {
+      const oldPassword = document.getElementById("oldPassword").value.trim();
+      const newPassword = document.getElementById("newPassword").value.trim();
 
-      const passwordRef = ref(db, "vendorPassword");
-      try {
-        const snapshot = await get(passwordRef);
-        if (!snapshot.exists()) {
-          alert("No password set in database.");
-          return;
-        }
-        const savedPassword = snapshot.val();
-        if (savedPassword === oldPassword) {
-          await set(passwordRef, newPassword);
-          alert("Password successfully changed.");
-        } else {
-          alert("Old password is incorrect.");
-        }
-      } catch (err) {
-        alert("Error: " + err.message);
+      if (!oldPassword || !newPassword) {
+        alert("Please fill out both password fields.");
+        return;
       }
-    }
+
+      const passwordRef = ref(database, "vendorPassword");
+      get(passwordRef).then(snapshot => {
+        if (snapshot.exists()) {
+          const currentPassword = snapshot.val();
+          if (oldPassword === currentPassword) {
+            set(passwordRef, newPassword)
+              .then(() => {
+                alert("Password changed successfully.");
+                document.getElementById("oldPassword").value = "";
+                document.getElementById("newPassword").value = "";
+              })
+              .catch(error => {
+                console.error("Error updating password:", error);
+                alert("Failed to update password. Try again.");
+              });
+          } else {
+            alert("Old password is incorrect.");
+          }
+        } else {
+          alert("No password is currently set in the database.");
+        }
+      }).catch(error => {
+        console.error("Error fetching password:", error);
+        alert("Error checking current password.");
+      });
+    };
   </script>
 </body>
 </html>
