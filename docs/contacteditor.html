@@ -17,6 +17,19 @@
       color: #333;
     }
 
+    .nav-button {
+      display: block;
+      width: max-content;
+      margin: 0 auto 20px auto;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      text-align: center;
+      text-decoration: none;
+    }
+
     form, .vendor-list, .password-section {
       max-width: 600px;
       margin: 0 auto 30px auto;
@@ -91,6 +104,8 @@
   </style>
 </head>
 <body>
+  <a class="nav-button" href="contactdisplay.html">← Back to Vendor List</a>
+
   <h1>Edit Vendor Contacts</h1>
   <form id="vendorForm">
     <h3>Add New Vendor</h3>
@@ -116,18 +131,57 @@
 
   <div class="password-section">
     <h3>Change Password</h3>
-    <label>Current Password</label>
-    <input id="currentPassword" type="password" />
+    <label>Old Password</label>
+    <input id="oldPassword" type="password" />
+    <button type="button" onclick="togglePasswordVisibility('oldPassword')">👁️</button>
     <label>New Password</label>
     <input id="newPassword" type="password" />
+    <button type="button" onclick="togglePasswordVisibility('newPassword')">👁️</button>
     <button onclick="changePassword()">Change Password</button>
   </div>
 
+  <a class="nav-button" href="contactdisplay.html">← Back to Vendor List</a>
+
   <div class="modal" id="editModal">
-    <div class="modal-content">
+    <div class="modal-content" style="min-width: 420px">
       <h3>Edit Vendor</h3>
       <label>Category</label>
-      <input id="editCategory" />
+      <select id="editCategory">
+        <option>Appliance Repair</option>
+        <option>Carpentry</option>
+        <option>Cleaning</option>
+        <option>Driveway/Asphalt</option>
+        <option>Electrician</option>
+        <option>Fencing</option>
+        <option>Flooring</option>
+        <option>Garage Door</option>
+        <option>Gutter Cleaning</option>
+        <option>Handyman</option>
+        <option>Heating & Cooling (HVAC)</option>
+        <option>Home Security</option>
+        <option>Insulation</option>
+        <option>Irrigation</option>
+        <option>Landscaping</option>
+        <option>Locksmith</option>
+        <option>Masonry</option>
+        <option>Painting</option>
+        <option>Pest Control</option>
+        <option>Plumber</option>
+        <option>Pool Maintenance</option>
+        <option>Remodeling</option>
+        <option>Roofing</option>
+        <option>Septic</option>
+        <option>Siding</option>
+        <option>Snow Removal</option>
+        <option>Solar</option>
+        <option>Surveyor</option>
+        <option>Tile Work</option>
+        <option>Tree Services</option>
+        <option>Well/Water Systems</option>
+        <option>Window Cleaning</option>
+        <option>Windows & Doors</option>
+        <option>Other</option>
+      </select>
       <label>Name</label>
       <input id="editName" />
       <label>Phone</label>
@@ -144,7 +198,7 @@
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
     import { getDatabase, ref, push, set, onValue, remove, update } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
-    import { getAuth, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    import { getAuth, updatePassword, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyBzI_qVMcNVtpc4vTycLwoj35G41-wrlHk",
@@ -159,8 +213,15 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
+
+    function togglePasswordVisibility(id) {
+      const input = document.getElementById(id);
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
     const vendorRef = ref(db, 'vendors');
     const auth = getAuth(app);
+
+    signInAnonymously(auth);
 
     const vendorForm = document.getElementById('vendorForm');
     const vendorList = document.getElementById('vendorList');
@@ -242,17 +303,14 @@
     }
 
     window.changePassword = function() {
-      const currentPass = document.getElementById('currentPassword').value;
-      const newPass = document.getElementById('newPassword').value;
       const user = auth.currentUser;
-      if (user && user.email) {
-        const credential = EmailAuthProvider.credential(user.email, currentPass);
-        reauthenticateWithCredential(user, credential)
-          .then(() => updatePassword(user, newPass))
-          .then(() => alert("Password changed successfully."))
-          .catch((error) => alert("Error: " + error.message));
-      } else {
-        alert("You must be logged in to change your password.");
+      const newPassword = document.getElementById('newPassword').value;
+      if (user) {
+        updatePassword(user, newPassword).then(() => {
+          alert("Password updated successfully.");
+        }).catch((error) => {
+          alert("Error updating password: " + error.message);
+        });
       }
     }
   </script>
