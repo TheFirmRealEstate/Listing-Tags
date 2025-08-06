@@ -30,6 +30,7 @@
       padding: 20px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       transition: transform 0.2s ease;
+      position: relative;
     }
     .vendor-card:hover {
       transform: scale(1.01);
@@ -64,6 +65,19 @@
     .nav-button:hover {
       background-color: #219150;
     }
+    .share-button {
+      margin-top: 10px;
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+    .share-button:hover {
+      background-color: #1f6691;
+    }
   </style>
 </head>
 <body>
@@ -89,7 +103,6 @@
 
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
-
     const vendorList = document.getElementById("vendorList");
 
     function renderVendors(vendors) {
@@ -103,9 +116,22 @@
           <p><strong>Phone:</strong> ${vendor.phone}</p>
           <p><strong>Email:</strong> ${vendor.email}</p>
           <p><strong>Website:</strong> ${vendor.website}</p>
+          <button class="share-button" onclick="shareContact('${vendor.name}', '${vendor.phone}', '${vendor.email}', '${vendor.website}', '${vendor.category}')">Share This Contact</button>
         `;
         vendorList.appendChild(card);
       });
+    }
+
+    window.shareContact = function(name, phone, email, website, category) {
+      const contactText = `Category: ${category}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nWebsite: ${website}`;
+      if (navigator.share) {
+        navigator.share({
+          title: `${name} - ${category}`,
+          text: contactText
+        }).catch(console.error);
+      } else {
+        prompt("Copy and share this contact:", contactText);
+      }
     }
 
     function loadVendors() {
