@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Elmer G. Voigt</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+      color: #2c3e50;
+      line-height: 1.6;
+    }
+    header {
+      background-color: #34495e;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.6em;
+    }
+    .intro {
+      padding: 20px;
+      text-align: center;
+      font-size: 1.1em;
+    }
+    .image-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .image-container img {
+      max-width: 90%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .accordion {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+    .accordion-item {
+      background-color: white;
+      border-radius: 8px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      overflow: hidden;
+    }
+    .accordion-title {
+      padding: 16px;
+      font-weight: bold;
+      background-color: #ecf0f1;
+      cursor: pointer;
+    }
+    .accordion-content {
+      display: none;
+      padding: 16px;
+      background-color: #fff;
+    }
+    .accordion-content.open {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>You May Find This Interesting...</h1>
+  </header>
+
+  <div class="intro">
+    This home was originally built for Elmer G. Voigt, a key figure at Western Printing & Lithographing Company during its golden years in Racine, Wisconsin.
+  </div>
+
+  <div class="image-container">
+    <img src="https://mayeshiba.github.io/Tether/docs/elmer-portrait.png" alt="Elmer G. Voigt portrait">
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-item">
+      <div class="accordion-title" onclick="toggleAccordion(this)">Who was Elmer G. Voigt?</div>
+      <div class="accordion-content">
+        <p>Elmer G. Voigt was a longtime executive at Western Printing & Lithographing Company, a cornerstone of Racine’s business history. He was instrumental in the company's success during the mid-20th century. This home was built for him in the early 1950s, a reflection of both his professional achievement and the confidence of the post-war publishing boom.</p>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <div class="accordion-title" onclick="toggleAccordion(this)">About Western Printing & Lithographing</div>
+      <div class="accordion-content">
+        <p>Western Printing & Lithographing Co., later known as Western Publishing, was founded in Racine in the early 20th century. It became best known for producing the Little Golden Books, a series of affordable and beautifully illustrated children's books that shaped generations of young readers. At its height, Western Publishing was a national leader in children's literature, comics, puzzles, and educational materials. Its contributions to American culture—especially mid-century childhood—were significant.</p>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <div class="accordion-title" onclick="toggleAccordion(this)">Why This Home Matters</div>
+      <div class="accordion-content">
+        <p>Knowing the original owner and purpose behind a home brings a new depth of appreciation. This house wasn’t just another postwar build—it was crafted for someone with stature in one of Racine’s most influential companies. The design reflects a mid-century blend of practicality and distinction, suited for a respected community figure. If walls could talk, they’d speak of editorial meetings, publishing milestones, and Racine’s vibrant mid-century heyday.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleAccordion(element) {
+      const content = element.nextElementSibling;
+      content.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
